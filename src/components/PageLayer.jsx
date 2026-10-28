@@ -3,11 +3,15 @@ import gsap from 'gsap'
 import { SECTIONS } from '../sections'
 import Pano360 from './Pano360'
 import Amenities from './Amenities'
+import Gallery from './Gallary'
+import Location from './Location'
 
 // Built pages by section id; anything not listed shows the placeholder.
 const PAGES = {
   'view-360': Pano360,
   amenities: Amenities,
+  gallery: Gallery,
+  location: Location,
 }
 
 // Full-screen page opened from the navbar, layered over the intro's final frame.

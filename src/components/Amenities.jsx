@@ -12,14 +12,22 @@ const AMENITIES = [
   { id: 'activity-studio', name: 'Activity Studio', meta: 'Lifestyle', focus: '45%' },
   { id: 'butterfly-garden', name: 'Butterfly Garden', meta: 'Nature', focus: '52%' },
 ]
-const COUNT = AMENITIES.length
 const pad = (n) => String(n).padStart(2, '0')
 const imgSrc = (a) => `${BASE}/${a.id}.webp`
 
 // Full-screen amenities tour. Next / Prev (buttons, arrow keys or swipe) wipe the next
 // photograph in over the current one, which drifts away underneath; the caption
 // lifts out and the new one rises in.
-export default function Amenities({ index, label, active, onBack }) {
+export default function Amenities({
+  index,
+  label,
+  active,
+  onBack,
+  items = AMENITIES,
+  getImage = imgSrc,
+  itemType = 'amenity',
+}) {
+  const count = items.length
   const rootRef = useRef(null)
   const slidesRef = useRef([])
   const currentRef = useRef(0)
@@ -118,7 +126,7 @@ export default function Amenities({ index, label, active, onBack }) {
       .to(out.shade, { opacity: 0.55, duration: T, ease: 'power2.inOut' }, 0)
   }
 
-  const step = (dir) => go((currentRef.current + dir + COUNT) % COUNT, dir)
+  const step = (dir) => go((currentRef.current + dir + count) % count, dir)
   const stepRef = useRef(step)
   useLayoutEffect(() => {
     stepRef.current = step
@@ -148,8 +156,8 @@ export default function Amenities({ index, label, active, onBack }) {
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(e.clientY - s.y)) step(dx < 0 ? 1 : -1)
   }
 
-  const item = AMENITIES[current]
-  const upNext = AMENITIES[(current + 1) % COUNT]
+  const item = items[current]
+  const upNext = items[(current + 1) % count]
 
   return (
     <section
@@ -164,7 +172,7 @@ export default function Amenities({ index, label, active, onBack }) {
       }}
     >
       {/* Photographs, stacked; only the current one (and the incoming one) is visible */}
-      {AMENITIES.map((a, i) => (
+      {items.map((a, i) => (
         <div
           key={a.id}
           ref={(el) => {
@@ -174,7 +182,7 @@ export default function Amenities({ index, label, active, onBack }) {
           aria-hidden={i !== current}
         >
           <img
-            src={imgSrc(a)}
+            src={getImage(a)}
             alt={a.name}
             width="1920"
             height="1080"
@@ -218,7 +226,7 @@ export default function Amenities({ index, label, active, onBack }) {
         <div className="overflow-hidden pt-3">
           <span className="js-page-in jp-meta inline-block tabular-nums" aria-live="polite">
             <span className="text-[#e6cfa6]">{pad(current + 1)}</span>
-            <span className="opacity-50"> / {pad(COUNT)}</span>
+            <span className="opacity-50"> / {pad(count)}</span>
           </span>
         </div>
       </div>
@@ -231,7 +239,7 @@ export default function Amenities({ index, label, active, onBack }) {
               <p className="js-cap jp-meta mb-3 text-[#e6cfa6]">{item.meta}</p>
             </div>
           </div>
-          <h2 className="jp-headline jp-headline--lg overflow-hidden pb-[0.1em]">
+          <h2 className="jp-headline jp-amen-title overflow-hidden pb-[0.1em]">
             <span className="js-page-in inline-block">
               <span className="js-cap inline-block">{item.name}</span>
             </span>
@@ -239,8 +247,8 @@ export default function Amenities({ index, label, active, onBack }) {
 
           {/* Progress: one segment per amenity, each one jumps there */}
           <div className="pt-5">
-            <div className="js-page-in flex items-center gap-1.5" role="group" aria-label="Choose amenity">
-              {AMENITIES.map((a, i) => (
+            <div className="js-page-in flex items-center gap-1.5" role="group" aria-label={`Choose ${itemType}`}>
+              {items.map((a, i) => (
                 <button
                   key={a.id}
                   type="button"
@@ -258,13 +266,13 @@ export default function Amenities({ index, label, active, onBack }) {
 
         <div>
           <div className="js-page-in flex items-center gap-3">
-            <button type="button" className="jp-glass jp-amen-btn jp-amen-btn--round" onClick={() => step(-1)} aria-label="Previous amenity">
+            <button type="button" className="jp-glass jp-amen-btn jp-amen-btn--round" onClick={() => step(-1)} aria-label={`Previous ${itemType}`}>
               <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
             <button type="button" className="jp-glass jp-amen-btn jp-amen-next" onClick={() => step(1)} aria-label={`Next: ${upNext.name}`}>
-              <img src={`${BASE}/${upNext.id}-thumb.webp`} alt="" width="240" height="135" className="jp-amen-thumb" draggable="false" />
+              <img src={getImage(upNext)} alt="" width="240" height="135" className="jp-amen-thumb" draggable="false" />
               <span className="flex flex-col items-start gap-1 text-left">
                 <span className="jp-meta text-[10px] opacity-60">Next</span>
                 <span className="jp-amen-next-name">{upNext.name}</span>

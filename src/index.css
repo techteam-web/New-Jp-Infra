@@ -310,6 +310,17 @@ html.jp-end-lock body {
 }
 
 /* Amenities tour */
+/* place name: upright Cormorant in spaced capitals, like the site's section titles */
+.jp-amen-title {
+  font-weight: 500;
+  font-style: normal;
+  font-size: clamp(2.2rem, 5.4vw, 5.2rem);
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-right: -0.12em; /* cancel trailing tracking */
+}
+
 .jp-amen-foot {
   /* no navbar here; just clear of the brand credit in the corner */
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(80px, 11svh, 108px));
@@ -407,5 +418,393 @@ html.jp-end-lock body {
   }
   .jp-nav-indicator {
     transition: none;
+  }
+}
+
+/* Location: daylight map in the site palette (cream ground, sand-and-caramel city, espresso accents) */
+.jp-loc-map .maplibregl-canvas {
+  outline: none;
+}
+
+.jp-loc-vignette {
+  background:
+    radial-gradient(ellipse 120% 90% at 55% 50%, transparent 60%, rgba(243, 234, 216, 0.75) 100%);
+}
+
+/* attribution: kept (required) but quiet, and moved clear of the brand credit */
+.jp-loc-map .maplibregl-ctrl-bottom-right {
+  right: auto;
+  left: 96px;
+}
+.jp-loc-map .maplibregl-ctrl-attrib {
+  background: rgba(20, 15, 10, 0.55) !important;
+  color: rgba(246, 239, 227, 0.5);
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+}
+.jp-loc-map .maplibregl-ctrl-attrib a {
+  color: rgba(246, 239, 227, 0.6);
+}
+.jp-loc-map .maplibregl-ctrl-attrib-button {
+  filter: invert(0.9) sepia(0.4);
+}
+.jp-loc-map .maplibregl-ctrl-logo {
+  opacity: 0.45;
+  filter: grayscale(1) brightness(1.6);
+}
+
+/* the frosted chrome (back, zoom, 2D/3D) goes solid espresso over the light map */
+.jp-loc .jp-glass {
+  background: rgba(20, 15, 10, 0.6);
+  box-shadow: 0 12px 40px rgba(8, 5, 2, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Rings pulsing out from the foot of the project tower */
+.jp-loc-pulse {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+.jp-loc-pulse i {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(154, 114, 64, 0.85);
+  border-radius: 999px;
+  transform: scaleY(0.55);
+  animation: jp-loc-ping 3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+.jp-loc-pulse i + i {
+  animation-delay: 1.5s;
+}
+@keyframes jp-loc-ping {
+  0% { transform: scale(1, 0.55); opacity: 0.9; }
+  100% { transform: scale(9, 4.95); opacity: 0; }
+}
+
+/* Place pins: gold dot on a fine stem, name beside it */
+.jp-loc-poi {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.jp-loc-poi::after {
+  content: "";
+  width: 1.5px;
+  height: 10px;
+  background: #0e0c0a;
+}
+/* espresso dot ringed in cream */
+.jp-loc-poi-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #0e0c0a;
+  box-shadow: 0 0 0 3px #fffaf0, 0 2px 8px rgba(60, 40, 20, 0.35);
+  transition: box-shadow 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* name in a small espresso pill, like the site's dark chrome */
+.jp-loc-poi-label {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: -6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(20, 15, 10, 0.6);
+  border: 1px solid rgba(246, 239, 227, 0.14);
+  box-shadow: 0 6px 16px rgba(60, 40, 20, 0.25);
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f6efe3;
+  white-space: nowrap;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.jp-loc-poi:hover .jp-loc-poi-dot,
+.jp-loc-poi.is-active .jp-loc-poi-dot {
+  transform: scale(1.2);
+  background: #d9b98a;
+  box-shadow: 0 0 0 3px #0e0c0a, 0 0 18px 4px rgba(217, 185, 138, 0.7);
+}
+.jp-loc-poi.is-active .jp-loc-poi-label {
+  color: #e6cfa6;
+  border-color: rgba(230, 207, 166, 0.5);
+}
+/* while the route travels to it the pin breathes; on arrival it blooms gold and stays lit */
+.jp-loc-poi.is-connecting .jp-loc-poi-dot {
+  animation: jp-loc-connect 0.9s ease-in-out infinite;
+}
+.jp-loc-poi.is-arrived .jp-loc-poi-dot {
+  transform: scale(1.35);
+  background: radial-gradient(circle at 35% 35%, #fff6e4, #e6cfa6 45%, #b88a55);
+  box-shadow: 0 0 0 3px #0e0c0a, 0 0 0 7px rgba(217, 185, 138, 0.35), 0 0 40px 10px rgba(217, 185, 138, 0.65);
+  animation: jp-loc-arrive 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.jp-loc-poi.is-arrived .jp-loc-poi-label {
+  color: #1a130c;
+  background: linear-gradient(180deg, #efdcb8, #d9b98a);
+  border-color: #1a130c;
+  box-shadow: 0 2px 12px rgba(217, 185, 138, 0.55), 0 6px 16px rgba(26, 19, 12, 0.25);
+}
+@keyframes jp-loc-connect {
+  50% { box-shadow: 0 0 0 3px #0e0c0a, 0 0 0 9px rgba(217, 185, 138, 0.3), 0 0 30px 8px rgba(217, 185, 138, 0.6); }
+}
+@keyframes jp-loc-arrive {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.7); box-shadow: 0 0 0 3px #0e0c0a, 0 0 0 16px rgba(217, 185, 138, 0), 0 0 70px 20px rgba(217, 185, 138, 0.75); }
+}
+.jp-loc-poi:focus-visible {
+  outline: 1px solid #e6cfa6;
+  outline-offset: 3px;
+}
+
+/* Location highlights panel: the navbar's frosted warm-dark glass, left side (bottom sheet on small screens) */
+.jp-loc-panel {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 64px);
+  display: flex;
+  flex-direction: column;
+  max-height: 44svh;
+  padding: 18px 16px 10px;
+  border-radius: 20px;
+  background: rgba(14, 12, 10, 0.88);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border: 1px solid rgba(246, 239, 227, 0.14);
+  box-shadow: 0 12px 40px rgba(8, 5, 2, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.jp-loc-panel-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(246, 239, 227, 0.55);
+}
+.jp-loc-panel-title {
+  margin: 10px 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(246, 239, 227, 0.12);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+  line-height: 1.02;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #f6efe3;
+}
+.jp-loc-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 6px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(246, 239, 227, 0.12);
+  border-radius: 999px;
+  background: rgba(246, 239, 227, 0.04);
+}
+.jp-loc-tab {
+  padding: 11px 6px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(246, 239, 227, 0.62);
+  cursor: pointer;
+  transition: color 0.3s ease, background-color 0.35s ease, border-color 0.35s ease;
+}
+.jp-loc-tab:hover {
+  color: #f6efe3;
+}
+/* selected band: the navbar's gold pill with dark type */
+.jp-loc-tab[aria-selected="true"] {
+  color: #1a130c;
+  background: linear-gradient(180deg, #efdcb8, #d9b98a);
+  box-shadow: 0 2px 12px rgba(217, 185, 138, 0.35);
+}
+.jp-loc-tab:focus-visible {
+  outline: 1px solid #e6cfa6;
+  outline-offset: 2px;
+}
+
+.jp-loc-list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent);
+}
+.jp-loc-list li {
+  animation: jp-loc-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.jp-loc-list li:nth-child(2) { animation-delay: 0.03s; }
+.jp-loc-list li:nth-child(3) { animation-delay: 0.06s; }
+.jp-loc-list li:nth-child(4) { animation-delay: 0.09s; }
+.jp-loc-list li:nth-child(5) { animation-delay: 0.12s; }
+.jp-loc-list li:nth-child(6) { animation-delay: 0.15s; }
+.jp-loc-list li:nth-child(n + 7) { animation-delay: 0.18s; }
+@keyframes jp-loc-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+.jp-loc-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.jp-loc-item:disabled {
+  cursor: default;
+}
+.jp-loc-item:not(:disabled):hover {
+  background: rgba(230, 207, 166, 0.07);
+}
+.jp-loc-item[aria-pressed="true"] {
+  border-color: transparent;
+  background: linear-gradient(90deg, rgba(230, 207, 166, 0.14), rgba(230, 207, 166, 0));
+  box-shadow: inset 2px 0 0 #e6cfa6;
+}
+.jp-loc-item:focus-visible {
+  outline: 1px solid #e6cfa6;
+  outline-offset: -1px;
+}
+.jp-loc-item-n {
+  flex: none;
+  width: 20px;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(246, 239, 227, 0.4);
+}
+.jp-loc-item-name {
+  flex: 1;
+  min-width: 0;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246, 239, 227, 0.86);
+}
+.jp-loc-item[aria-pressed="true"] .jp-loc-item-name,
+.jp-loc-item[aria-pressed="true"] .jp-loc-item-n {
+  color: #e6cfa6;
+}
+.jp-loc-item-km {
+  flex: none;
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(230, 207, 166, 0.85);
+}
+
+@media (min-width: 1024px) {
+  .jp-loc-panel {
+    left: clamp(16px, 4vw, 64px);
+    right: auto;
+    top: calc(clamp(16px, 4svh, 40px) + 64px);
+    bottom: auto;
+    width: 420px;
+    max-height: calc(100svh - clamp(16px, 4svh, 40px) - 64px - clamp(24px, 4svh, 40px));
+    padding: 26px 20px 12px;
+    border-radius: 24px;
+  }
+}
+
+/* Camera controls, right edge */
+.jp-loc-controls {
+  position: absolute;
+  right: clamp(16px, 4vw, 64px);
+  top: clamp(16px, 4svh, 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+@media (min-width: 1024px) {
+  .jp-loc-controls {
+    top: auto;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(90px, 13svh, 120px));
+  }
+}
+.jp-loc-ctrl-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 999px;
+}
+.jp-loc-ctrl {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #f6efe3;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.jp-loc-ctrl-group .jp-loc-ctrl {
+  border: 0;
+}
+.jp-loc-ctrl--solo {
+  background: rgba(20, 15, 10, 0.48);
+}
+.jp-loc-ctrl:hover {
+  background: rgba(230, 207, 166, 0.18);
+  color: #e6cfa6;
+}
+.jp-loc-ctrl:focus-visible {
+  outline: 1px solid #e6cfa6;
+  outline-offset: 2px;
+}
+.jp-loc-ctrl-rule {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: rgba(246, 239, 227, 0.16);
+}
+.jp-loc-ctrl-text {
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  margin-right: -0.16em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp-loc-pulse i,
+  .jp-loc-poi .jp-loc-poi-dot,
+  .jp-loc-list li {
+    animation: none;
   }
 }

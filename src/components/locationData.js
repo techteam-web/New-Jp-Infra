@@ -1,0 +1,72 @@
+// Estimated from the 2 and 5 min landmarks (Kashimira, by Miragaon / Kashigaon metro):
+// replace with the project's exact coordinates.
+export const PROJECT = { name: 'JP Infra', lngLat: [72.8755, 19.2745] }
+
+// Travel-time bands. lngLat comes from OpenStreetMap; null where the place isn't mapped there,
+// so it is listed without a pin.
+export const BANDS = [
+  {
+    id: '2',
+    label: '2 Min',
+    places: [
+      { name: 'Shree Ganesha Temple', lngLat: null },
+      { name: 'Podar International School', lngLat: null },
+      { name: 'Euro Kids', lngLat: null },
+      { name: 'Kamats Legacy', lngLat: null },
+      { name: 'Western Express Highway', lngLat: [72.8795, 19.2705] },
+      { name: 'Bhaktivedanta Wellness Centre', lngLat: [72.87053, 19.27001] },
+    ],
+  },
+  {
+    id: '5',
+    label: '5 Min',
+    places: [
+      { name: 'Factory Outlets of Retail Brands', lngLat: null },
+      { name: 'Dara’s Dhaba', lngLat: [72.88898, 19.27678] },
+      { name: 'Hotel Western', lngLat: [72.8888, 19.2762] },
+      { name: 'Samartha Hospital', lngLat: [72.87477, 19.28126] },
+      { name: 'Royal Hometel Suites', lngLat: null },
+      { name: 'Vedant Intl. High School', lngLat: null },
+      { name: 'Ghodbunder Road', lngLat: [72.88984, 19.27794] },
+      { name: 'Kashigaon Metro Station', lngLat: [72.88024, 19.27767] },
+      { name: 'Durga Temple', lngLat: [72.86227, 19.27332] },
+      { name: 'GCC International School (ICSE)', lngLat: null },
+      { name: 'The Fern Residency', lngLat: null },
+      { name: 'GCC Hotel & Club', lngLat: [72.87852, 19.28323] },
+      { name: 'Delhi Darbar Inn', lngLat: null },
+      { name: 'A.D. Int. School', lngLat: null },
+      { name: 'Sai Palace Hotel & Gardens Restaurant', lngLat: [72.85917, 19.28527] },
+      { name: 'Miragaon Metro Station', lngLat: [72.8807, 19.27101] },
+    ],
+  },
+  {
+    id: '10',
+    label: '10 Min',
+    places: [
+      { name: 'Vijay Sales', lngLat: null },
+      { name: 'D-Mart', lngLat: [72.87637, 19.2814] },
+      { name: "McDonald's", lngLat: null },
+      { name: 'Decathlon Sports', lngLat: null },
+      { name: "St. Xavier's High School Kashigaon", lngLat: [72.86876, 19.27709] },
+      { name: 'Wockhardt Hospital', lngLat: [72.8622, 19.28425] },
+      { name: 'Fountain City Mall', lngLat: null },
+      { name: 'Inox', lngLat: null },
+      { name: 'Ghodbunder Fort', lngLat: [72.88823, 19.29683] },
+      { name: 'Thakur Mall', lngLat: [72.8738, 19.2621] },
+      { name: 'ISKCON Temple', lngLat: null },
+      { name: 'RBK School', lngLat: [72.87157, 19.30221] },
+      { name: 'Holy Cross Convent School', lngLat: [72.86588, 19.28538] },
+      { name: 'TBC The Boat Club', lngLat: null },
+      { name: 'Lifecare Hospital', lngLat: [72.86572, 19.28423] },
+      { name: 'Jain Temple', lngLat: null },
+      { name: 'St. Joseph Church', lngLat: null },
+      { name: 'Singapore Int. School', lngLat: [72.87657, 19.26215] },
+      { name: 'Fountain Hotel', lngLat: [72.90432, 19.28471] },
+      { name: 'N. L. Dalmia College', lngLat: [72.87113, 19.269] },
+      { name: 'Pandurang Wadi Metro Station', lngLat: [72.87249, 19.25973] },
+      { name: 'PVR Cinemas', lngLat: null },
+      { name: 'Starbucks Coffee', lngLat: null },
+      { name: 'Dahisar Toll Naka', lngLat: [72.8717, 19.25867] },
+    ],
+  },
+]

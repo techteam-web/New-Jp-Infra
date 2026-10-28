@@ -8,7 +8,7 @@ import brainwingLogo from './assets/brainwing.webp'
 const HOME = SECTIONS[0].id
 const PAGE_IDS = new Set(SECTIONS.slice(1).map((s) => s.id))
 // Immersive pages hide the navbar; their own Back button returns.
-const NO_NAV_PAGES = new Set(['view-360', 'amenities'])
+const NO_NAV_PAGES = new Set(['view-360', 'amenities', 'gallery', 'location'])
 const pageFromHash = () => {
   const id = window.location.hash.slice(1)
   return PAGE_IDS.has(id) ? id : null
